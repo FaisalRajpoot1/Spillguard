@@ -1,0 +1,62 @@
+# ─────────────────────────────────────────────────────────────
+#  Spillguard — container topology
+#
+#  Two services, two networks. The model lives on an
+#  `internal: true` network with NO route to the internet —
+#  that is the air-gap, enforced by Docker itself.
+#
+#  Day 1: only `spillguard-app` is needed (MODEL_BACKEND=mock|fireworks).
+#  Day 4: uncomment `gemma-vllm` and set MODEL_BACKEND=vllm-local on the
+#         AMD MI300X instance to self-host Gemma.
+# ─────────────────────────────────────────────────────────────
+
+services:
+  spillguard-app:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: spillguard/app:latest
+    container_name: spillguard-app
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data          # persist the audit DB
+    networks:
+      - external
+      - model_internal
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ── AMD-hosted Gemma (enable on the MI300X for the real product) ──
+  # gemma-vllm:
+  #   image: rocm/vllm:latest            # ROCm-optimized vLLM
+  #   container_name: gemma-vllm
+  #   command: >
+  #     vllm serve google/gemma-3-12b-it
+  #     --host 0.0.0.0 --port 8000
+  #     --guided-decoding-backend xgrammar
+  #   environment:
+  #     - HF_TOKEN=${HF_TOKEN}
+  #   devices:
+  #     - /dev/kfd
+  #     - /dev/dri
+  #   security_opt:
+  #     - seccomp:unconfined
+  #   group_add:
+  #     - video
+  #   networks:
+  #     - model_internal              # <-- internet-less, on purpose
+  #   ipc: host
+
+networks:
+  external:
+    driver: bridge
+  model_internal:
+    driver: bridge
+    internal: true                  # <-- THE AIR-GAP: no gateway to the internet

@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-ink-900 text-slate-200 font-sans antialiased;
+    background-image: var(--tw-bg-radial, none);
+    /* Subtle command-console backdrop: radial glow + faint grid. */
+    background:
+      radial-gradient(120% 80% at 50% -10%, #16305233 0%, transparent 55%),
+      linear-gradient(#ffffff06 1px, transparent 1px) 0 0 / 44px 44px,
+      linear-gradient(90deg, #ffffff06 1px, transparent 1px) 0 0 / 44px 44px,
+      #05070b;
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: #38e1c455;
+    color: #eafffb;
+  }
+
+  /* Console-style scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #1f2a3d transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: #1f2a3d;
+    border-radius: 6px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: #2a3a53;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-xl border border-line bg-ink-800/80 shadow-panel backdrop-blur-sm;
+  }
+
+  .label {
+    @apply text-[11px] font-medium uppercase tracking-[0.18em] text-muted;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-line bg-ink-700/70 px-2 py-1 font-mono text-xs text-slate-300;
+  }
+
+  /* Focus ring in the signal colour */
+  .focus-signal:focus-visible {
+    @apply outline-none ring-2 ring-signal/60 ring-offset-2 ring-offset-ink-900;
+  }
+}

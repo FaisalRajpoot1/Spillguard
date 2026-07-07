@@ -1,0 +1,14 @@
+# ── Spillguard server dependencies ──
+# Pinned to minor for reproducibility; loosen only deliberately.
+
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+httpx==0.28.1
+python-multipart==0.0.20      # multipart form / file uploads
+pypdf==5.1.0                  # PDF text extraction (used by /scan/file, Day 3)
+
+# ── dev / test (installed in the image too; tiny) ──
+pytest==8.3.4
+pytest-asyncio==0.25.0

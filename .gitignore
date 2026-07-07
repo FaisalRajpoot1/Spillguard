@@ -1,0 +1,65 @@
+# ─────────────────────────────────────────────────────────────
+#  Spillguard — root .gitignore
+# ─────────────────────────────────────────────────────────────
+
+# Secrets & local env (NEVER commit real keys)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Runtime data (audit DB, generated artifacts)
+/data/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Model weights / caches (huge — never commit)
+/models/
+.cache/
+*.gguf
+*.safetensors
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Node / client
+node_modules/
+client/dist/
+.vite/
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDE / tooling
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/

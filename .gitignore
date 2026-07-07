@@ -63,3 +63,7 @@ desktop.ini
 # Logs
 *.log
 logs/
+
+# Pre-pivot brainstorm notes (kept locally, not part of the Spillguard repo)
+/req.md
+/pr-gatekeeper-build-spec.md

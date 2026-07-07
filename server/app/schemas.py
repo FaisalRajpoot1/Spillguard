@@ -136,6 +136,27 @@ class ScanResult(BaseModel):
     signals: Signals | None = None  # full evidence (omit-able for slim responses)
 
 
+class RemediateRequest(BaseModel):
+    text: str
+    cui_categories: list[CUICategory] = Field(default_factory=list)
+    classification_level: ClassificationLevel = ClassificationLevel.UNCLASSIFIED
+
+    @field_validator("text")
+    @classmethod
+    def _not_blank(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("text must not be empty")
+        return v
+
+
+class RemediateResponse(BaseModel):
+    fixable: bool
+    note: str = ""
+    remediated_text: str
+    changes: list[str] = Field(default_factory=list)
+    result: ScanResult | None = None  # re-scan of the remediated text ("after")
+
+
 class AuditEntry(BaseModel):
     id: int
     ts: str

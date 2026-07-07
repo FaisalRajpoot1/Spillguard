@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import type { ScanResult } from "../types";
+import { ApiError, remediate } from "../api";
+import type { RemediationResponse, ScanResult } from "../types";
 import { CATEGORY_META, verdictMeta } from "../lib/verdict";
 import { HighlightedText } from "./HighlightedText";
 import { VerdictStamp } from "./VerdictStamp";
 import { StageTrace } from "./StageTrace";
+import { RemediationPanel } from "./RemediationPanel";
 
 interface Props {
   result: ScanResult;
@@ -11,10 +14,38 @@ interface Props {
 }
 
 export function ResultPanel({ result, inspectedText }: Props) {
+  const [rem, setRem] = useState<RemediationResponse | null>(null);
+  const [fixing, setFixing] = useState(false);
+  const [fixErr, setFixErr] = useState<string | null>(null);
+
+  // Reset remediation whenever a new scan arrives.
+  useEffect(() => {
+    setRem(null);
+    setFixErr(null);
+  }, [result]);
+
+  async function onFix() {
+    setFixing(true);
+    setFixErr(null);
+    try {
+      setRem(await remediate(inspectedText, result.cui_categories, result.classification_level));
+    } catch (e) {
+      setFixErr(e instanceof ApiError ? e.message : "Remediation failed.");
+    } finally {
+      setFixing(false);
+    }
+  }
+
+  const canFix = result.verdict !== "ALLOW";
+
   return (
     <div className="flex flex-col gap-4">
       <VerdictStamp result={result} />
       <Comparison result={result} />
+
+      {canFix && !rem && <FixItBar onFix={onFix} fixing={fixing} error={fixErr} />}
+      {rem && <RemediationPanel originalVerdict={result.verdict} data={rem} />}
+
       <StageTrace result={result} />
 
       <section className="panel p-5">
@@ -141,6 +172,42 @@ function Stats({ result }: { result: ScanResult }) {
       <span title="model confidence">conf {(result.confidence * 100).toFixed(0)}%</span>
       <span className="text-line">|</span>
       <span title="latency">{result.latency_ms} ms</span>
+    </div>
+  );
+}
+
+function FixItBar({
+  onFix,
+  fixing,
+  error,
+}: {
+  onFix: () => void;
+  fixing: boolean;
+  error: string | null;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 rounded-xl border border-signal/25 bg-signal/5 px-4 py-3">
+      <div className="min-w-0">
+        <div className="text-sm font-medium text-slate-200">Spillguard can fix this</div>
+        <div className="text-xs text-muted">
+          Redact PII, apply the required marking, and re-scan the compliant version.
+        </div>
+        {error && <div className="mt-1 text-xs text-block">{error}</div>}
+      </div>
+      <button
+        onClick={onFix}
+        disabled={fixing}
+        className="focus-signal inline-flex shrink-0 items-center gap-2 rounded-lg border border-signal/50 bg-signal/10 px-4 py-2 font-mono text-sm font-semibold text-signal transition hover:bg-signal/20 disabled:opacity-50"
+      >
+        {fixing ? (
+          <>
+            <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-signal/30 border-t-signal" />
+            FIXING…
+          </>
+        ) : (
+          <>⚙ FIX IT</>
+        )}
+      </button>
     </div>
   );
 }

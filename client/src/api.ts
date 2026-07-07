@@ -3,9 +3,12 @@
 
 import type {
   AuditEntry,
+  ClassificationLevel,
+  CUICategory,
   EgressStatus,
   EvalReport,
   HealthResponse,
+  RemediationResponse,
   ScanResult,
 } from "./types";
 
@@ -63,6 +66,20 @@ export function scanFile(file: File, signal?: AbortSignal): Promise<ScanResult> 
   return requestJson<ScanResult>("/scan/file", {
     method: "POST",
     body: form,
+    signal,
+  });
+}
+
+export function remediate(
+  text: string,
+  categories: CUICategory[],
+  level: ClassificationLevel,
+  signal?: AbortSignal,
+): Promise<RemediationResponse> {
+  return requestJson<RemediationResponse>("/remediate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, cui_categories: categories, classification_level: level }),
     signal,
   });
 }

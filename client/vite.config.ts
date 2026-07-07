@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // The API endpoints exposed by the FastAPI server.
-const API_ROUTES = ["/scan", "/egress-status", "/audit", "/health", "/eval-report"];
+const API_ROUTES = ["/scan", "/remediate", "/egress-status", "/audit", "/health", "/eval-report"];
 
 export default defineConfig({
   plugins: [react()],

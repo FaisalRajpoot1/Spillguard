@@ -65,6 +65,14 @@ export interface ScanResult {
   signals: Signals | null;
 }
 
+export interface RemediationResponse {
+  fixable: boolean;
+  note: string;
+  remediated_text: string;
+  changes: string[];
+  result: ScanResult | null; // re-scan of the fixed text
+}
+
 export interface AuditEntry {
   id: number;
   ts: string;

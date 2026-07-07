@@ -26,7 +26,15 @@ from .extract import extract_text
 from .logging_config import configure_logging, get_logger, request_id_var
 from .model import build_model_client
 from .pipeline import scan
-from .schemas import AuditEntry, HealthResponse, ScanRequest, ScanResult
+from .pipeline.remediation import remediate
+from .schemas import (
+    AuditEntry,
+    HealthResponse,
+    RemediateRequest,
+    RemediateResponse,
+    ScanRequest,
+    ScanResult,
+)
 from .storage import AuditLog
 
 log = get_logger(__name__)
@@ -127,6 +135,32 @@ async def egress_status(request: Request) -> EgressStatus:
 @app.post("/scan", response_model=ScanResult, tags=["scan"])
 async def scan_text(request: Request, body: ScanRequest) -> ScanResult:
     return await _run_scan(request, body.text)
+
+
+@app.post("/remediate", response_model=RemediateResponse, tags=["scan"])
+async def remediate_doc(request: Request, body: RemediateRequest) -> RemediateResponse:
+    """Produce a compliant version of a document (redact PII, add markings) and
+    re-scan it so the caller can show the before/after verdict."""
+    settings: Settings = request.app.state.settings
+    if len(body.text) > settings.max_input_chars:
+        raise InputTooLargeError(
+            f"Input exceeds the {settings.max_input_chars:,}-character limit."
+        )
+
+    fix = remediate(body.text, body.cui_categories, body.classification_level)
+
+    after: ScanResult | None = None
+    if fix.fixable:
+        after = await scan(fix.remediated_text, request.app.state.client)
+        await request.app.state.audit.record(after, _hash(fix.remediated_text))
+
+    return RemediateResponse(
+        fixable=fix.fixable,
+        note=fix.note,
+        remediated_text=fix.remediated_text,
+        changes=fix.changes,
+        result=after,
+    )
 
 
 @app.post("/scan/file", response_model=ScanResult, tags=["scan"])

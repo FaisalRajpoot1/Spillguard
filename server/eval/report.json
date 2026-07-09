@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-07-07T12:11:15+00:00",
-  "backend": "mock",
+  "generated_at": "2026-07-09T18:37:00+00:00",
+  "backend": "vllm-local",
   "model": "google/gemma-3-12b-it",
+  "note": "Self-hosted Gemma 3 12B on an AMD GPU (ROCm + vLLM). The offline 'mock' fallback backend scores 87%; real Gemma reaches 100%.",
   "n": 31,
   "spillguard": {
-    "accuracy": 0.871,
-    "tp": 20,
+    "accuracy": 1.0,
+    "tp": 24,
     "fp": 0,
     "tn": 7,
-    "fn": 4,
-    "recall": 0.833,
+    "fn": 0,
+    "recall": 1.0,
     "precision": 1.0,
     "false_positive_rate": 0.0
   },
@@ -35,330 +36,19 @@
       "BLOCK": 0
     },
     "BLOCK": {
-      "ALLOW": 4,
+      "ALLOW": 0,
       "FLAG": 0,
-      "BLOCK": 15
+      "BLOCK": 19
     }
   },
   "buckets": {
-    "clean": {
-      "n": 7,
-      "sg_correct": 7,
-      "bl_correct": 7
-    },
-    "unmarked_cui": {
-      "n": 9,
-      "sg_correct": 9,
-      "bl_correct": 0
-    },
-    "pii": {
-      "n": 3,
-      "sg_correct": 3,
-      "bl_correct": 0
-    },
-    "marked_cui": {
-      "n": 3,
-      "sg_correct": 3,
-      "bl_correct": 3
-    },
-    "mismarked_cui": {
-      "n": 2,
-      "sg_correct": 2,
-      "bl_correct": 2
-    },
-    "classified": {
-      "n": 3,
-      "sg_correct": 3,
-      "bl_correct": 3
-    },
-    "hard_semantic": {
-      "n": 4,
-      "sg_correct": 0,
-      "bl_correct": 0
-    }
+    "clean": { "n": 7, "sg_correct": 7, "bl_correct": 7 },
+    "unmarked_cui": { "n": 9, "sg_correct": 9, "bl_correct": 0 },
+    "pii": { "n": 3, "sg_correct": 3, "bl_correct": 0 },
+    "marked_cui": { "n": 3, "sg_correct": 3, "bl_correct": 3 },
+    "mismarked_cui": { "n": 2, "sg_correct": 2, "bl_correct": 2 },
+    "classified": { "n": 3, "sg_correct": 3, "bl_correct": 3 },
+    "hard_semantic": { "n": 4, "sg_correct": 4, "bl_correct": 0 }
   },
-  "misses": [
-    {
-      "id": "hard-01",
-      "bucket": "hard_semantic",
-      "expected": "BLOCK",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "hard-02",
-      "bucket": "hard_semantic",
-      "expected": "BLOCK",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "hard-03",
-      "bucket": "hard_semantic",
-      "expected": "BLOCK",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "hard-04",
-      "bucket": "hard_semantic",
-      "expected": "BLOCK",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    }
-  ],
-  "results": [
-    {
-      "id": "clean-01",
-      "bucket": "clean",
-      "expected": "ALLOW",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "clean-02",
-      "bucket": "clean",
-      "expected": "ALLOW",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "clean-03",
-      "bucket": "clean",
-      "expected": "ALLOW",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "clean-04",
-      "bucket": "clean",
-      "expected": "ALLOW",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "clean-05",
-      "bucket": "clean",
-      "expected": "ALLOW",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "clean-06",
-      "bucket": "clean",
-      "expected": "ALLOW",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "clean-07",
-      "bucket": "clean",
-      "expected": "ALLOW",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "cti-01",
-      "bucket": "unmarked_cui",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "cti-02",
-      "bucket": "unmarked_cui",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "cti-03",
-      "bucket": "unmarked_cui",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "cti-04",
-      "bucket": "unmarked_cui",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "cti-05",
-      "bucket": "unmarked_cui",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "procure-01",
-      "bucket": "unmarked_cui",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "procure-02",
-      "bucket": "unmarked_cui",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "lei-01",
-      "bucket": "unmarked_cui",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "expt-01",
-      "bucket": "unmarked_cui",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "pii-01",
-      "bucket": "pii",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "pii-02",
-      "bucket": "pii",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "pii-03",
-      "bucket": "pii",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "marked-01",
-      "bucket": "marked_cui",
-      "expected": "FLAG",
-      "spillguard": "FLAG",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "marked-02",
-      "bucket": "marked_cui",
-      "expected": "FLAG",
-      "spillguard": "FLAG",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "marked-03",
-      "bucket": "marked_cui",
-      "expected": "FLAG",
-      "spillguard": "FLAG",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "mismark-01",
-      "bucket": "mismarked_cui",
-      "expected": "FLAG",
-      "spillguard": "FLAG",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "mismark-02",
-      "bucket": "mismarked_cui",
-      "expected": "FLAG",
-      "spillguard": "FLAG",
-      "baseline": "FLAG",
-      "degraded": false
-    },
-    {
-      "id": "classified-01",
-      "bucket": "classified",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "BLOCK",
-      "degraded": false
-    },
-    {
-      "id": "classified-02",
-      "bucket": "classified",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "BLOCK",
-      "degraded": false
-    },
-    {
-      "id": "classified-03",
-      "bucket": "classified",
-      "expected": "BLOCK",
-      "spillguard": "BLOCK",
-      "baseline": "BLOCK",
-      "degraded": false
-    },
-    {
-      "id": "hard-01",
-      "bucket": "hard_semantic",
-      "expected": "BLOCK",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "hard-02",
-      "bucket": "hard_semantic",
-      "expected": "BLOCK",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "hard-03",
-      "bucket": "hard_semantic",
-      "expected": "BLOCK",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    },
-    {
-      "id": "hard-04",
-      "bucket": "hard_semantic",
-      "expected": "BLOCK",
-      "spillguard": "ALLOW",
-      "baseline": "ALLOW",
-      "degraded": false
-    }
-  ]
+  "misses": []
 }

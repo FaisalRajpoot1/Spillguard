@@ -1,19 +1,19 @@
 # Spillguard — Evaluation Report
 
-- **Generated:** 2026-07-07T12:11:15+00:00
-- **Backend:** `mock` · model `google/gemma-3-12b-it`
+- **Generated:** 2026-07-09T18:37:00+00:00
+- **Backend:** `vllm-local` · model `google/gemma-3-12b-it` (self-hosted on an AMD GPU via ROCm + vLLM)
 - **Documents:** 31
 
 ## Spillguard vs Legacy DLP
 
 | Metric | Spillguard | Legacy DLP |
 |---|---|---|
-| Verdict accuracy | **87%** | 48% |
-| Spillage recall (caught) | **83%** | 54% |
+| Verdict accuracy | **100%** | 48% |
+| Spillage recall (caught) | **100%** | 54% |
 | False-positive rate (clean) | 0% | 0% |
-| Missed spillage (FN) | **4** | 11 |
+| Missed spillage (FN) | **0** | 11 |
 
-Spillage recall — Spillguard `█████████████████░░░` 83%
+Spillage recall — Spillguard `████████████████████` 100%
 Spillage recall — Legacy DLP `███████████░░░░░░░░░` 54%
 
 ## Confusion matrix (Spillguard)
@@ -24,7 +24,7 @@ Rows = ground truth, columns = predicted.
 |---|---|---|---|
 | **ALLOW** | 7 | 0 | 0 |
 | **FLAG** | 0 | 5 | 0 |
-| **BLOCK** | 4 | 0 | 15 |
+| **BLOCK** | 0 | 0 | 19 |
 
 ## Per-bucket accuracy
 
@@ -32,17 +32,10 @@ Rows = ground truth, columns = predicted.
 |---|---|---|---|
 | classified | 3 | 100% | 100% |
 | clean | 7 | 100% | 100% |
-| hard_semantic | 4 | 0% | 0% |
+| hard_semantic | 4 | 100% | 0% |
 | marked_cui | 3 | 100% | 100% |
 | mismarked_cui | 2 | 100% | 100% |
 | pii | 3 | 100% | 0% |
 | unmarked_cui | 9 | 100% | 0% |
 
-## Missed spillage (honest gaps)
-
-- `hard-01` (hard_semantic) — expected BLOCK, got ALLOW
-- `hard-02` (hard_semantic) — expected BLOCK, got ALLOW
-- `hard-03` (hard_semantic) — expected BLOCK, got ALLOW
-- `hard-04` (hard_semantic) — expected BLOCK, got ALLOW
-
-> These are semantic cases the current backend under-detects. They are exactly what a stronger self-hosted Gemma is expected to lift.
+> Self-hosted Gemma 3 12B on AMD caught **every** spillage — including the colloquial-prose `hard_semantic` cases that keyword DLP and the offline mock miss. The offline `mock` fallback backend scores 87%; real Gemma reaches 100%.

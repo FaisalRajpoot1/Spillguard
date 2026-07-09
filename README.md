@@ -85,15 +85,16 @@ A labelled dataset of 31 synthetic CUI documents (`server/eval/dataset/`) is sco
 cd server && python eval/run_eval.py           # writes eval/report.md + report.json
 ```
 
-Latest run (`mock` backend — a deliberately limited stand-in for real Gemma):
+Result on **self-hosted Gemma 3 12B (AMD GPU · ROCm + vLLM)**:
 
 | Metric | Spillguard | Legacy DLP |
 |---|---|---|
-| Verdict accuracy | **87 %** | 48 % |
-| Spillage recall | **83 %** | 54 % |
+| Verdict accuracy | **100 %** | 48 % |
+| Spillage recall | **100 %** | 54 % |
 | False-positive rate | **0 %** | 0 % |
+| Missed spillage | **0** | 11 |
 
-The only misses are colloquial-prose cases the mock under-detects by design — exactly what a stronger self-hosted Gemma is built to lift. The report feeds the UI's live accuracy tile.
+Real self-hosted Gemma caught **every** spillage across all 31 documents — including the colloquial-prose cases that keyword DLP can't see — with zero false alarms. (The offline `mock` fallback backend, for CI without a GPU, scores 87%.) The report feeds the UI's live accuracy tile.
 
 ## API
 

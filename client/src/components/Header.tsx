@@ -7,6 +7,12 @@ interface Props {
 }
 
 export function Header({ health, egress }: Props) {
+  // Recording toggle: localhost:8000/?clean=1 hides the backend badge
+  // (so the "mock" dev label isn't on camera). The egress pill stays.
+  const clean =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("clean") === "1";
+
   return (
     <header className="flex flex-wrap items-center justify-between gap-4 border-b border-line/70 px-6 py-4">
       <div className="flex items-center gap-3">
@@ -20,7 +26,7 @@ export function Header({ health, egress }: Props) {
       </div>
 
       <div className="flex items-center gap-2.5">
-        <BackendBadge health={health} />
+        {!clean && <BackendBadge health={health} />}
         <EgressPill egress={egress} />
       </div>
     </header>

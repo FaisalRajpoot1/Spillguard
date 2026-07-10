@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spillguard — Pitch Deck</title>
+    <style>
+      :root {
+        --ink: #05070b;
+        --panel: #0a0e16;
+        --line: #1f2a3d;
+        --teal: #38e1c4;
+        --allow: #2fd47a;
+        --flag: #f5b642;
+        --block: #ff4d5e;
+        --muted: #7f8ba3;
+        --text: #e6ecf5;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        background:
+          radial-gradient(120% 80% at 50% -10%, #16305233 0%, transparent 55%),
+          linear-gradient(#ffffff08 1px, transparent 1px) 0 0 / 44px 44px,
+          linear-gradient(90deg, #ffffff08 1px, transparent 1px) 0 0 / 44px 44px,
+          var(--ink);
+        color: var(--text);
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        overflow: hidden;
+      }
+      .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+
+      /* progress + counter */
+      #bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--teal); z-index: 10; transition: width .3s; }
+      #counter { position: fixed; bottom: 20px; right: 26px; font-family: ui-monospace, monospace; font-size: 13px; color: var(--muted); z-index: 10; }
+      #hint { position: fixed; bottom: 20px; left: 26px; font-size: 12px; color: var(--muted); z-index: 10; }
+
+      .slide {
+        display: none;
+        position: absolute; inset: 0;
+        padding: 7vh 9vw;
+        flex-direction: column; justify-content: center;
+        animation: fade .35s ease;
+      }
+      .slide.active { display: flex; }
+      @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+      .kicker { font-family: ui-monospace, monospace; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 18px; }
+      h1 { font-size: 64px; font-weight: 800; letter-spacing: -1px; line-height: 1.05; }
+      h2 { font-size: 44px; font-weight: 700; letter-spacing: -.5px; line-height: 1.12; margin-bottom: 26px; }
+      .lead { font-size: 26px; line-height: 1.5; color: #c7d0e0; max-width: 1000px; }
+      .big-quote { font-size: 38px; font-weight: 700; line-height: 1.35; max-width: 1050px; }
+      .big-quote .g { color: var(--teal); }
+      ul { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+      li { font-size: 24px; line-height: 1.4; color: #cdd6e6; padding-left: 30px; position: relative; }
+      li::before { content: "▸"; color: var(--teal); position: absolute; left: 0; }
+      .muted { color: var(--muted); }
+      .accent { color: var(--teal); }
+      .foot { margin-top: 34px; font-size: 17px; color: var(--muted); }
+
+      .brand { display: flex; align-items: center; gap: 16px; }
+      .shield { width: 58px; height: 58px; display: grid; place-items: center; border: 1px solid #38e1c455; border-radius: 14px; box-shadow: 0 0 40px -8px var(--teal); }
+      .wordmark { font-family: ui-monospace, monospace; font-size: 46px; font-weight: 800; letter-spacing: 7px; }
+      .wordmark b { color: var(--teal); }
+
+      .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 12px; }
+      .card { border: 1px solid var(--line); background: #0a0e16cc; border-radius: 14px; padding: 22px; }
+      .card h3 { font-size: 19px; color: var(--teal); margin-bottom: 8px; font-family: ui-monospace, monospace; }
+      .card p { font-size: 17px; color: #b7c0d2; line-height: 1.45; }
+
+      .stat-row { display: flex; gap: 46px; margin-top: 22px; flex-wrap: wrap; }
+      .stat .n { font-family: ui-monospace, monospace; font-size: 60px; font-weight: 800; }
+      .stat .l { font-size: 15px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+      .n.allow { color: var(--allow); } .n.block { color: var(--block); } .n.teal { color: var(--teal); }
+
+      .lanes { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; max-width: 900px; margin-top: 12px; }
+      .lane { padding: 26px; }
+      .lane + .lane { border-left: 1px solid var(--line); }
+      .lane .lab { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+      .verdict { font-family: ui-monospace, monospace; font-size: 40px; font-weight: 800; margin-top: 10px; display: flex; align-items: center; gap: 12px; }
+      .verdict.allow { color: var(--allow); } .verdict.block { color: var(--block); }
+      .dot { width: 14px; height: 14px; border-radius: 50%; background: currentColor; box-shadow: 0 0 16px currentColor; }
+
+      table.cmp { border-collapse: collapse; margin-top: 12px; font-size: 22px; }
+      table.cmp td, table.cmp th { border: 1px solid var(--line); padding: 14px 22px; text-align: center; }
+      table.cmp th { color: var(--muted); font-weight: 600; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; }
+      table.cmp td:first-child, table.cmp th:first-child { text-align: left; }
+      .yes { color: var(--allow); } .no { color: var(--block); }
+
+      /* print → PDF: every slide on its own landscape page */
+      @media print {
+        @page { size: 1280px 720px; margin: 0; }
+        body { overflow: visible; }
+        .slide { display: flex !important; position: relative; page-break-after: always; height: 720px; width: 1280px; }
+        #bar, #counter, #hint { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="bar"></div>
+
+    <!-- 1 — Title -->
+    <section class="slide active">
+      <div class="brand">
+        <div class="shield">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none">
+            <path d="M12 2 4 5v6c0 4.5 3.2 8.4 8 11 4.8-2.6 8-6.5 8-11V5l-8-3Z" stroke="#38e1c4" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="m8.5 12 2.4 2.4L15.8 9" stroke="#38e1c4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="wordmark">SPILL<b>GUARD</b></div>
+      </div>
+      <h1 style="margin-top:34px">The data-spillage guard<br />that <span class="accent">never phones home.</span></h1>
+      <p class="foot">AMD Developer Hackathon: ACT II — Track 3 (Unicorn) · Self-hosted Gemma on AMD</p>
+    </section>
+
+    <!-- 2 — Problem -->
+    <section class="slide">
+      <div class="kicker">The problem</div>
+      <h2>Secret data leaks — and the tools can't stop it.</h2>
+      <ul>
+        <li>Defense contractors must protect <span class="accent">Controlled Unclassified Information (CUI)</span> — law: DFARS 7012 / CMMC 2.0.</li>
+        <li>A leak — a "spillage" — is a reportable, contract-ending event.</li>
+        <li>Legacy DLP is just <span class="accent">keyword matching</span> — it misses anything it wasn't told to look for.</li>
+      </ul>
+    </section>
+
+    <!-- 3 — Insight -->
+    <section class="slide">
+      <div class="kicker">The insight</div>
+      <p class="big-quote">An AI security tool that inspects your document by sending it to a <span class="g">cloud</span> AI has already <span class="g">committed the leak</span> it exists to prevent.</p>
+      <p class="foot">You cannot prevent a spillage by committing one. Every cloud-based "AI DLP" is disqualified.</p>
+    </section>
+
+    <!-- 4 — Solution -->
+    <section class="slide">
+      <div class="kicker">The solution</div>
+      <h2>Spillguard inspects every document at the door.</h2>
+      <div class="stat-row">
+        <div class="stat"><div class="n allow">ALLOW</div><div class="l">clean — send it</div></div>
+        <div class="stat"><div class="n" style="color:var(--flag)">FLAG</div><div class="l">sensitive — review/fix</div></div>
+        <div class="stat"><div class="n block">BLOCK</div><div class="l">spillage — stop</div></div>
+      </div>
+      <p class="foot">…with the AI (<span class="accent">Google's Gemma</span>) running on <span class="accent">your own AMD GPU</span>, on a network with no route to the internet. The document never leaves the box.</p>
+    </section>
+
+    <!-- 5 — Money shot -->
+    <section class="slide">
+      <div class="kicker">The demo</div>
+      <h2>Same document. Opposite verdicts.</h2>
+      <div class="lanes">
+        <div class="lane"><div class="lab">Legacy DLP</div><div class="verdict allow"><span class="dot"></span>ALLOW</div><div class="muted" style="margin-top:8px">sees no keywords — fooled</div></div>
+        <div class="lane"><div class="lab">Spillguard</div><div class="verdict block"><span class="dot"></span>BLOCK</div><div class="muted" style="margin-top:8px">understood the meaning</div></div>
+      </div>
+      <p class="foot">Plain prose, no labels, no trigger words. Legacy waves it through. Spillguard catches it — and quotes the exact sentence. And it doesn't just catch it: <span class="accent">one click auto-redacts the secret and adds the correct label.</span></p>
+    </section>
+
+    <!-- 6 — How it works -->
+    <section class="slide">
+      <div class="kicker">How it works</div>
+      <h2>Cheap checks first. The AI never has the last word.</h2>
+      <div class="cards">
+        <div class="card"><h3>1 · Deterministic</h3><p>Regex/keyword checks run first & always — also our "legacy DLP" baseline.</p></div>
+        <div class="card"><h3>2 · Gemma (AMD)</h3><p>Self-hosted Gemma reads the <em>meaning</em> — catches unlabeled secrets.</p></div>
+        <div class="card"><h3>3 · Marking check</h3><p>Compares markings the doc has vs. what its content requires.</p></div>
+        <div class="card" style="grid-column: span 3"><h3>4 · Decision engine</h3><p>Deterministic rules — <span class="accent">not the LLM</span> — own the verdict. Model down? It degrades to a safe verdict instead of failing.</p></div>
+      </div>
+    </section>
+
+    <!-- 7 — Use of AMD -->
+    <section class="slide">
+      <div class="kicker">Use of AMD</div>
+      <h2>Gemma 3, self-hosted on AMD — the reason it works.</h2>
+      <ul>
+        <li><span class="accent">Gemma 3 (12B)</span> served on an <span class="accent">AMD Instinct GPU via ROCm + vLLM</span>.</li>
+        <li>The GPU's memory holds the entire CUI ruleset in-context — <span class="accent">no fine-tuning</span>.</li>
+        <li>Air-gap enforced by an internal-only network — the model has <span class="accent">no route out</span>.</li>
+        <li>Self-hosting on AMD isn't bolted on — <span class="accent">it's the only way this product can legally exist.</span></li>
+      </ul>
+    </section>
+
+    <!-- 8 — Proof -->
+    <section class="slide">
+      <div class="kicker">Proof it works</div>
+      <h2>Real self-hosted Gemma on AMD: a perfect score.</h2>
+      <div class="stat-row">
+        <div class="stat"><div class="n teal">100%</div><div class="l">accuracy · vs 48% legacy</div></div>
+        <div class="stat"><div class="n teal">100%</div><div class="l">spillage caught · vs 54%</div></div>
+        <div class="stat"><div class="n allow">0%</div><div class="l">false alarms</div></div>
+        <div class="stat"><div class="n allow">0</div><div class="l">missed · vs 11 legacy</div></div>
+      </div>
+      <p class="foot">31-document labelled evaluation, reproducible with one command. Every verdict cites its evidence; low-confidence cases abstain to a human.</p>
+    </section>
+
+    <!-- 9 — Market -->
+    <section class="slide">
+      <div class="kicker">Market</div>
+      <h2>Large, budgeted, urgent — and underserved.</h2>
+      <div class="stat-row">
+        <div class="stat"><div class="n teal">~300,000</div><div class="l">US defense contractors forced into CUI compliance now</div></div>
+      </div>
+      <ul style="margin-top:26px">
+        <li>Buyers: primes, subs, DoD program offices, the intelligence community.</li>
+        <li>Adjacent: any regulated enclave (health, legal, finance) that can't use cloud LLMs.</li>
+        <li><span class="accent">Why now:</span> the CMMC deadline + the cloud-AI-DLP contradiction = an open lane.</li>
+      </ul>
+    </section>
+
+    <!-- 10 — Differentiation -->
+    <section class="slide">
+      <div class="kicker">Why we're different</div>
+      <h2>The only quadrant that has all three.</h2>
+      <table class="cmp">
+        <tr><th></th><th>Legacy DLP</th><th>Cloud "AI DLP"</th><th>Spillguard</th></tr>
+        <tr><td>Understands meaning</td><td class="no">✕</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td>Data stays on-prem</td><td class="yes">✓</td><td class="no">✕</td><td class="yes">✓</td></tr>
+        <tr><td>Deployable in an enclave</td><td class="yes">✓</td><td class="no">✕</td><td class="yes">✓</td></tr>
+      </table>
+      <p class="foot">Semantic <em>and</em> air-gapped — nobody else is in this box.</p>
+    </section>
+
+    <!-- 11 — Close -->
+    <section class="slide">
+      <div class="kicker">Close</div>
+      <p class="big-quote">An AI DLP that phones home to the cloud has already leaked.<br /><span class="g">Spillguard has no wire to phone home on.</span></p>
+      <p class="foot">Fully containerized · one-command run · open source (MIT) · self-hosted Gemma on AMD.<br />github.com/FaisalRajpoot1/Spillguard</p>
+    </section>
+
+    <div id="counter"></div>
+    <div id="hint">← → navigate · click to advance · Ctrl+P → Save as PDF</div>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      let i = 0;
+      const bar = document.getElementById("bar");
+      const counter = document.getElementById("counter");
+      function show(n) {
+        i = Math.max(0, Math.min(slides.length - 1, n));
+        slides.forEach((s, k) => s.classList.toggle("active", k === i));
+        bar.style.width = ((i + 1) / slides.length) * 100 + "%";
+        counter.textContent = (i + 1) + " / " + slides.length;
+      }
+      document.addEventListener("keydown", (e) => {
+        if (["ArrowRight", "ArrowDown", " ", "PageDown"].includes(e.key)) { e.preventDefault(); show(i + 1); }
+        else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+        else if (e.key === "Home") show(0);
+        else if (e.key === "End") show(slides.length - 1);
+      });
+      document.body.addEventListener("click", (e) => { if (!e.target.closest("a")) show(i + 1); });
+      show(0);
+    </script>
+  </body>
+</html>

@@ -163,7 +163,7 @@
           </div>
           <div class="wm">SPILL<b>GUARD</b></div>
         </div>
-        <div class="idx mono">CONFIDENTIAL // DEMO</div>
+        <div class="idx mono keep">CONFIDENTIAL // DEMO</div>
       </div>
       <div class="body">
         <h1>The data-spillage guard<br />that <span class="accent">never phones home.</span></h1>
@@ -276,6 +276,30 @@
       <div class="foot"><div class="mark">SPILL<b>GUARD</b></div><div class="mark">MEASURED, NOT CLAIMED</div></div>
     </section>
 
+    <!-- 08B · EVIDENCE -->
+    <section class="slide">
+      <div class="top"><div class="tag"><span class="slash">//</span> Evidence</div><div class="idx"></div></div>
+      <div class="body">
+        <h2 style="margin-bottom:6px">Real Gemma. Real AMD. Measured live.</h2>
+        <p class="mono" style="font-family:var(--mono); font-size:13px; letter-spacing:1.5px; color:var(--muted); margin-bottom:22px;">CAPTURED ON THE AMD GPU NOTEBOOK · ROCm · vLLM · google/gemma-3-12b-it</p>
+        <div style="display:grid; grid-template-columns:1.28fr 1fr 1fr; gap:16px; align-items:start;">
+          <figure style="border:1px solid #35e0c266; border-radius:12px; overflow:hidden; background:#0a0e1a; box-shadow:0 0 34px -14px var(--teal);">
+            <img src="proof/eval.png" alt="100% eval on self-hosted Gemma" style="width:100%; display:block;" />
+            <figcaption style="font-family:var(--mono); font-size:12px; color:#cdd7e8; padding:11px 14px; border-top:1px solid var(--line);"><b style="color:var(--teal)">100%</b> accuracy — self-hosted Gemma vs 48% legacy</figcaption>
+          </figure>
+          <figure style="border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#0a0e1a;">
+            <img src="proof/gpu.png" alt="rocm-smi AMD GPU" style="width:100%; display:block;" />
+            <figcaption style="font-family:var(--mono); font-size:12px; color:#cdd7e8; padding:11px 14px; border-top:1px solid var(--line);">AMD GPU · <b style="color:var(--teal)">rocm-smi</b></figcaption>
+          </figure>
+          <figure style="border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#0a0e1a;">
+            <img src="proof/gemma.png" alt="Gemma served via vLLM" style="width:100%; display:block;" />
+            <figcaption style="font-family:var(--mono); font-size:12px; color:#cdd7e8; padding:11px 14px; border-top:1px solid var(--line);"><b style="color:var(--teal)">gemma-3-12b-it</b> served via vLLM</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="foot"><div class="mark">SPILL<b>GUARD</b></div><div class="mark">EXHIBIT · SELF-HOSTED ON AMD</div></div>
+    </section>
+
     <!-- 09 · MARKET -->
     <section class="slide">
       <div class="top"><div class="tag"><span class="slash">//</span> Market</div><div class="idx">09 <b>/ 12</b></div></div>
@@ -349,6 +373,12 @@
       const slides = Array.from(document.querySelectorAll(".slide"));
       let i = 0;
       const bar = document.getElementById("bar");
+      // Auto-number slide indices (skip the title's "CONFIDENTIAL // DEMO").
+      slides.forEach((s, k) => {
+        const el = s.querySelector(".idx");
+        if (el && !el.classList.contains("keep"))
+          el.innerHTML = String(k + 1).padStart(2, "0") + ' <b>/ ' + slides.length + "</b>";
+      });
       function show(n) {
         i = Math.max(0, Math.min(slides.length - 1, n));
         slides.forEach((s, k) => s.classList.toggle("active", k === i));

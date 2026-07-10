@@ -2,146 +2,132 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Spillguard — cover</title>
+    <title>Spillguard — Cover</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      /* ── Cover is exactly 1200×630 (lablab/social card). Open in a browser
-            and screenshot the framed area, or use the export tip at the bottom. ── */
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body {
-        background: #05070b;
-        display: grid;
-        place-items: center;
-        min-height: 100vh;
-        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      :root {
+        --ink: #060810; --panel: #0c1220; --line: #1b2740;
+        --teal: #35e0c2; --green: #2fd47a; --red: #ff5566; --amber: #f5b642;
+        --text: #eaf0fb; --muted: #7e8aa6;
+        --display: "Chakra Petch", "Segoe UI", sans-serif;
+        --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+        --body: "IBM Plex Sans", system-ui, sans-serif;
       }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: #05060a; display: grid; place-items: center; min-height: 100vh; }
+
+      /* EXACT 1200×630 — screenshot this .cover node (DevTools → Capture node screenshot) */
       .cover {
-        position: relative;
-        width: 1200px;
-        height: 630px;
-        overflow: hidden;
-        color: #e6ecf5;
+        position: relative; width: 1200px; height: 630px; overflow: hidden;
+        color: var(--text); font-family: var(--body);
+        display: grid; grid-template-columns: 1.12fr 0.88fr;
         background:
-          radial-gradient(120% 90% at 78% -10%, #16305255 0%, transparent 55%),
+          radial-gradient(130% 100% at 88% -25%, #14344e66 0%, transparent 55%),
+          radial-gradient(90% 80% at -10% 120%, #10281f55 0%, transparent 55%),
           linear-gradient(#ffffff08 1px, transparent 1px) 0 0 / 46px 46px,
           linear-gradient(90deg, #ffffff08 1px, transparent 1px) 0 0 / 46px 46px,
-          #05070b;
-        display: grid;
-        grid-template-columns: 1.15fr 1fr;
+          var(--ink);
       }
-      .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+      /* corner reticle brackets */
+      .br { position: absolute; width: 30px; height: 30px; border-color: #35e0c25e; border-style: solid; }
+      .br.tl { top: 26px; left: 26px; border-width: 2px 0 0 2px; }
+      .br.tr { top: 26px; right: 26px; border-width: 2px 2px 0 0; }
+      .br.bl { bottom: 26px; left: 26px; border-width: 0 0 2px 2px; }
+      .br.brr { bottom: 26px; right: 26px; border-width: 0 2px 2px 0; }
 
-      /* left */
-      .left { padding: 64px 56px; display: flex; flex-direction: column; }
+      /* LEFT */
+      .left { padding: 62px 20px 54px 64px; display: flex; flex-direction: column; }
       .brand { display: flex; align-items: center; gap: 16px; }
-      .shield {
-        width: 56px; height: 56px; display: grid; place-items: center;
-        border: 1px solid #38e1c455; border-radius: 14px;
-        box-shadow: 0 0 40px -8px #38e1c4;
-      }
-      .wordmark { font-family: ui-monospace, monospace; font-size: 40px; font-weight: 800; letter-spacing: 6px; }
-      .wordmark b { color: #38e1c4; font-weight: 800; }
-      .kicker { margin-top: 6px; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #7f8ba3; }
+      .shield { width: 58px; height: 58px; display: grid; place-items: center; border: 1px solid #35e0c255; border-radius: 14px; box-shadow: 0 0 46px -10px var(--teal), inset 0 0 26px -16px var(--teal); }
+      .wm { font-family: var(--display); font-size: 40px; font-weight: 700; letter-spacing: 5px; }
+      .wm b { color: var(--teal); }
+      .kicker { margin-top: 5px; font-family: var(--mono); font-size: 11px; letter-spacing: 3.5px; text-transform: uppercase; color: var(--muted); }
 
-      .headline { margin-top: 48px; font-size: 44px; line-height: 1.15; font-weight: 700; letter-spacing: -0.5px; }
-      .headline .g { color: #38e1c4; }
-      .sub { margin-top: 20px; font-size: 18px; line-height: 1.5; color: #aab4c6; max-width: 500px; }
+      .headline { margin-top: 44px; font-family: var(--display); font-size: 47px; font-weight: 700; line-height: 1.08; letter-spacing: -.5px; }
+      .headline .g { color: var(--teal); }
+      .sub { margin-top: 20px; font-size: 17px; line-height: 1.55; color: #b9c3d7; max-width: 520px; }
 
-      .chips { margin-top: auto; display: flex; flex-wrap: wrap; gap: 10px; }
-      .chip {
-        font-family: ui-monospace, monospace; font-size: 12px; color: #c7d0e0;
-        border: 1px solid #1f2a3d; background: #0f1420cc; border-radius: 8px;
-        padding: 7px 12px; display: inline-flex; align-items: center; gap: 7px;
-      }
-      .dot { width: 7px; height: 7px; border-radius: 50%; }
+      .chips { margin-top: auto; display: flex; flex-wrap: wrap; gap: 9px; }
+      .chip { font-family: var(--mono); font-size: 12px; color: #cdd7e8; border: 1px solid var(--line); background: #0c1220cc; border-radius: 8px; padding: 7px 12px; display: inline-flex; align-items: center; gap: 7px; }
+      .cd { width: 7px; height: 7px; border-radius: 50%; }
 
-      /* right — the product essence: two verdict lanes + egress */
-      .right { padding: 64px 56px 64px 24px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
-      .panel {
-        border: 1px solid #1f2a3d; background: #0a0e16cc; border-radius: 16px;
-        box-shadow: 0 20px 60px -30px #000, inset 0 1px 0 0 #ffffff0a;
-      }
+      /* RIGHT — product essence */
+      .right { padding: 60px 60px 54px 20px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+      .panel { border: 1px solid var(--line); background: #0a0e1acc; border-radius: 16px; box-shadow: 0 24px 70px -34px #000, inset 0 1px 0 0 #ffffff0d; overflow: hidden; }
       .lanes { display: grid; grid-template-columns: 1fr 1fr; }
-      .lane { padding: 22px 22px; }
-      .lane + .lane { border-left: 1px solid #1f2a3d; }
-      .lane .label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #7f8ba3; }
-      .verdict { margin-top: 12px; display: flex; align-items: center; gap: 10px; font-family: ui-monospace, monospace; font-weight: 800; font-size: 26px; }
-      .verdict .d { width: 12px; height: 12px; border-radius: 50%; }
-      .allow { color: #2fd47a; } .allow .d { background: #2fd47a; box-shadow: 0 0 16px #2fd47a; }
-      .block { color: #ff4d5e; } .block .d { background: #ff4d5e; box-shadow: 0 0 18px #ff4d5e; }
-      .lane .note { margin-top: 8px; font-size: 12px; color: #7f8ba3; }
+      .lane { padding: 20px 22px; }
+      .lane + .lane { border-left: 1px solid var(--line); }
+      .lab { font-family: var(--mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+      .vd { font-family: var(--mono); font-size: 27px; font-weight: 600; margin-top: 9px; display: flex; align-items: center; gap: 10px; }
+      .vd.allow { color: var(--green); } .vd.block { color: var(--red); }
+      .dot { width: 11px; height: 11px; border-radius: 50%; background: currentColor; box-shadow: 0 0 15px currentColor; }
+      .note { margin-top: 7px; font-size: 11px; color: var(--muted); }
+      .fooled { text-align: center; padding: 10px; border-top: 1px solid #ff556633; background: #ff55660f; font-family: var(--mono); font-size: 11.5px; letter-spacing: .5px; color: var(--red); }
 
-      .egress {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 18px 22px;
+      .egress { display: flex; align-items: center; justify-content: space-between; padding: 16px 22px; }
+      .egress .big { font-family: var(--display); font-size: 30px; font-weight: 700; }
+      .egress .big span { font-family: var(--body); font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 7px; }
+      .sealed { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--green); }
+      .sealed .d { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); }
+
+      /* verified stamp */
+      .stamp {
+        position: absolute; top: 40px; right: 44px; transform: rotate(7deg);
+        font-family: var(--mono); font-size: 12px; letter-spacing: 1px; color: var(--teal);
+        border: 1.5px solid #35e0c2aa; border-radius: 8px; padding: 8px 12px; background: #0a1a1899;
+        text-align: center; line-height: 1.35; box-shadow: 0 0 30px -10px var(--teal);
       }
-      .egress .big { font-family: ui-monospace, monospace; font-size: 30px; font-weight: 800; }
-      .egress .big span { font-size: 13px; font-weight: 400; color: #7f8ba3; margin-left: 6px; }
-      .egress .state { display: inline-flex; align-items: center; gap: 8px; font-family: ui-monospace, monospace; font-size: 12px; color: #2fd47a; }
-      .egress .state .d { width: 8px; height: 8px; border-radius: 50%; background: #2fd47a; box-shadow: 0 0 12px #2fd47a; }
-
-      .fooled { text-align: center; padding: 10px; border-top: 1px solid #ff4d5e33; background: #ff4d5e10; color: #ff4d5e; font-family: ui-monospace, monospace; font-size: 12px; }
+      .stamp b { font-family: var(--display); font-size: 17px; display: block; }
     </style>
   </head>
   <body>
     <div class="cover">
+      <span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span>
+
       <div class="left">
         <div class="brand">
           <div class="shield">
-            <svg viewBox="0 0 24 24" width="30" height="30" fill="none">
-              <path d="M12 2 4 5v6c0 4.5 3.2 8.4 8 11 4.8-2.6 8-6.5 8-11V5l-8-3Z" stroke="#38e1c4" stroke-width="1.6" stroke-linejoin="round"/>
-              <path d="m8.5 12 2.4 2.4L15.8 9" stroke="#38e1c4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none">
+              <path d="M12 2 4 5v6c0 4.5 3.2 8.4 8 11 4.8-2.6 8-6.5 8-11V5l-8-3Z" stroke="#35e0c2" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="m8.5 12 2.4 2.4L15.8 9" stroke="#35e0c2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <div>
-            <div class="wordmark">SPILL<b>GUARD</b></div>
+            <div class="wm">SPILL<b>GUARD</b></div>
             <div class="kicker">Air-gapped data-spillage guard</div>
           </div>
         </div>
 
-        <div class="headline">
-          The AI security tool that<br /><span class="g">never phones home.</span>
-        </div>
-        <div class="sub">
-          Catches sensitive-data leaks by understanding meaning — with Gemma
-          self-hosted on your own AMD GPU, so the document never leaves the box.
-        </div>
+        <div class="headline">The AI security tool that<br /><span class="g">never phones home.</span></div>
+        <div class="sub">Catches sensitive-data leaks by understanding meaning — with Gemma self-hosted on your own AMD GPU, so the document never leaves the box.</div>
 
         <div class="chips">
-          <span class="chip"><span class="dot" style="background:#38e1c4"></span> Gemma 3 · self-hosted</span>
-          <span class="chip"><span class="dot" style="background:#ed1c24"></span> AMD Instinct · ROCm</span>
-          <span class="chip"><span class="dot" style="background:#7f8ba3"></span> DFARS / CMMC 2.0</span>
+          <span class="chip"><span class="cd" style="background:#35e0c2"></span> Gemma 3 · self-hosted</span>
+          <span class="chip"><span class="cd" style="background:#ed1c24"></span> AMD Instinct · ROCm · vLLM</span>
+          <span class="chip"><span class="cd" style="background:#7e8aa6"></span> DFARS · CMMC 2.0</span>
         </div>
       </div>
 
       <div class="right">
         <div class="panel">
           <div class="lanes">
-            <div class="lane">
-              <div class="label">Legacy DLP</div>
-              <div class="verdict allow"><span class="d"></span> ALLOW</div>
-              <div class="note">sees no keywords</div>
-            </div>
-            <div class="lane">
-              <div class="label">Spillguard</div>
-              <div class="verdict block"><span class="d"></span> BLOCK</div>
-              <div class="note">understood the meaning</div>
-            </div>
+            <div class="lane"><div class="lab">Legacy DLP</div><div class="vd allow"><span class="dot"></span>ALLOW</div><div class="note">sees no keywords</div></div>
+            <div class="lane"><div class="lab">Spillguard</div><div class="vd block"><span class="dot"></span>BLOCK</div><div class="note">understood the meaning</div></div>
           </div>
-          <div class="fooled">Legacy DLP was fooled — Spillguard caught the spillage</div>
+          <div class="fooled">LEGACY DLP WAS FOOLED — SPILLGUARD CAUGHT IT</div>
         </div>
-
         <div class="panel egress">
           <div class="big">0<span>bytes left the box</span></div>
-          <div class="state"><span class="d"></span> AIR-GAPPED</div>
+          <div class="sealed"><span class="d"></span> AIR-GAPPED</div>
         </div>
       </div>
-    </div>
 
-    <!--
-      EXPORT TIP: open this file in Chrome, DevTools → run:
-      document.querySelector('.cover').scrollIntoView();
-      then screenshot the 1200×630 .cover element (or use DevTools "Capture node
-      screenshot" on the .cover element for a pixel-perfect PNG).
-    -->
+      <div class="stamp"><b>100%</b>on real AMD Gemma</div>
+    </div>
   </body>
 </html>

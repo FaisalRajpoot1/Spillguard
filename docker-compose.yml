@@ -13,8 +13,8 @@
 services:
   spillguard-app:
     build:
-      context: ./server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: server/Dockerfile
     image: spillguard/app:latest
     container_name: spillguard-app
     env_file: .env

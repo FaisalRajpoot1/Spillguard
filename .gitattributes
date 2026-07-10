@@ -1,0 +1,4 @@
+# Force LF for files that break with CRLF line endings.
+Dockerfile text eol=lf
+*.sh text eol=lf
+*.dockerignore text eol=lf

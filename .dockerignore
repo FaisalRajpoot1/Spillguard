@@ -1,0 +1,18 @@
+# Keep the Docker build context small — the image builds the client
+# and installs Python deps fresh, so none of this is needed.
+
+.git/
+**/node_modules/
+**/.venv/
+**/__pycache__/
+**/*.pyc
+client/dist/
+server/app/ui/static/
+data/
+*.db
+.env
+.env.*
+!.env.example
+docs/
+*.md
+!server/eval/report.md

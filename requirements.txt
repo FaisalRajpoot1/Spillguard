@@ -1,0 +1,9 @@
+# Runtime deps for the Vercel serverless function (api/index.py).
+# Mirrors server/requirements.txt minus the dev/test + local-server bits
+# (Vercel provides the ASGI server itself, so no uvicorn needed here).
+fastapi==0.115.6
+pydantic==2.10.4
+pydantic-settings==2.7.1
+httpx==0.28.1
+python-multipart==0.0.20
+pypdf==5.1.0

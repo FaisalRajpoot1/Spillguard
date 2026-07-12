@@ -59,7 +59,8 @@ class AuditLog:
 
     # ── writes ───────────────────────────────────────────────
     def _record_sync(self, result: ScanResult, doc_hash: str) -> None:
-        assert self._conn is not None, "AuditLog.connect() not called"
+        if self._conn is None:  # storage unavailable — audit disabled, scan still works
+            return
         with self._lock:
             self._conn.execute(
                 "INSERT INTO audit "
@@ -86,7 +87,8 @@ class AuditLog:
 
     # ── reads ────────────────────────────────────────────────
     def _list_sync(self, limit: int) -> list[AuditEntry]:
-        assert self._conn is not None, "AuditLog.connect() not called"
+        if self._conn is None:  # storage unavailable — no history to show
+            return []
         with self._lock:
             rows = self._conn.execute(
                 "SELECT id, ts, doc_hash, verdict, classification_level, "

@@ -102,6 +102,7 @@ Real self-hosted Gemma caught **every** spillage across all 31 documents — inc
 |---|---|
 | `POST /scan` | Inspect text → `ScanResult` |
 | `POST /scan/file` | Inspect an uploaded `.txt`/`.pdf` |
+| `POST /remediate` | One-click **Fix it** — redact PII + apply missing CUI markings |
 | `GET /egress-status` | Air-gap / egress state |
 | `GET /audit` | Recent verdicts (hash-only, never content) |
 | `GET /eval-report` | Latest evaluation metrics |
@@ -127,7 +128,7 @@ FastAPI · Pydantic v2 · vLLM on ROCm · Gemma 3 12B · SQLite (audit) · React
 
 ## Status
 
-Backend pipeline, swappable model backends, evaluation harness, and the SOC-console UI (verdict, legacy-vs-Spillguard comparison, pipeline trace, egress monitor, accuracy tile, audit trail, file upload) are complete and verified. Remaining: flip to `vllm-local` on the provisioned MI300X for the live self-hosted demo.
+Backend pipeline, swappable model backends, evaluation harness, and the SOC-console UI (verdict, legacy-vs-Spillguard comparison, pipeline trace, egress monitor, accuracy tile, audit trail, file upload, and one-click **Fix it** remediation) are complete and verified — including a full evaluation run on self-hosted Gemma 3 12B on an AMD GPU (ROCm + vLLM) scoring 100% verdict accuracy with zero false alarms.
 
 ## License
 

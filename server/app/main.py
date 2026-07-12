@@ -57,7 +57,10 @@ async def lifespan(app: FastAPI):
     app.state.client = build_model_client(settings)
 
     audit = AuditLog(settings.audit_db_path)
-    audit.connect()
+    try:
+        audit.connect()
+    except Exception as e:  # noqa: BLE001 — never let storage block startup
+        log.warning("audit log unavailable (%s); continuing without it", e)
     app.state.audit = audit
 
     try:

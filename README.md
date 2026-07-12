@@ -26,8 +26,6 @@ Browser ──► spillguard-app (FastAPI) ──► 4-stage pipeline ──► 
 
 The pipeline runs **deterministic checks first** (regex/keyword — also our "legacy DLP" baseline), then a **semantic Gemma scan**, a **portion-marking check**, and a **deterministic decision engine that owns the final verdict** — the LLM informs, but never has final authority. If the model is unavailable the scan **degrades** to the deterministic verdict rather than failing.
 
-Full design: **[docs/system-architecture.md](docs/system-architecture.md)** · Build plan: **[docs/project-plan.md](docs/project-plan.md)** · Plain-English overview: **[docs/project-info.md](docs/project-info.md)**
-
 ## Where AMD runs (Use of AMD Platforms)
 
 | Component | Runs on | Notes |
@@ -117,7 +115,7 @@ spillguard/
 │   ├── eval/      #   labelled dataset + scoring harness + report
 │   └── scripts/   #   warmup / readiness probe
 ├── client/        # React (Vite) SOC-console UI
-├── docs/          # architecture · plan · deploy runbook · demo script · deck
+├── docs/          # slide deck · cover · AMD/Gemma proof screenshots
 ├── docker-compose.yml
 └── README.md · LICENSE · .env.example
 ```
